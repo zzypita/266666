@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ "main" ]
+
+# 設定 GitHub Actions 的權限，允許它把網頁推送到 GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    # 關鍵：告訴 GitHub 進入 order-system 資料夾執行指令
+    defaults:
+      run:
+        working-directory: ./order-system
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-context: ./order-system
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: './order-system/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # 這裡假設你的專案編譯後產出的資料夾是 dist 或 build 
+      # (Vite 通常是 dist，React 舊版通常是 build，請依實際情況修改)
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './order-system/dist' 
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

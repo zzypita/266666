@@ -18,7 +18,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./order-system
+        working-directory: ./266666
 
     steps:
       - name: Checkout

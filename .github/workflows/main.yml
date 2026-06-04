@@ -4,7 +4,6 @@ on:
   push:
     branches: [ "main" ]
 
-# 設定 GitHub Actions 的權限，允許它把網頁推送到 GitHub Pages
 permissions:
   contents: read
   pages: write
@@ -17,7 +16,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
 
-    # 關鍵：告訴 GitHub 進入 order-system 資料夾執行指令
     defaults:
       run:
         working-directory: ./order-system
@@ -29,13 +27,11 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-context: ./order-system
-          node-version: 20
-          cache: 'npm'
-          cache-dependency-path: './order-system/package-lock.json'
+          node-version: 20  # 維持 Node 20 確保穩定性
 
       - name: Install dependencies
-        run: npm ci
+        # 改用 npm install，這樣就算沒有 package-lock.json 也能正常安裝
+        run: npm install
 
       - name: Build project
         run: npm run build
@@ -43,8 +39,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # 這裡假設你的專案編譯後產出的資料夾是 dist 或 build 
-      # (Vite 通常是 dist，React 舊版通常是 build，請依實際情況修改)
+      # 請確認你的專案打包後是產出 dist 資料夾
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -53,3 +48,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        

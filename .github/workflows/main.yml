@@ -16,10 +16,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./266666
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,10 +23,9 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20  # 維持 Node 20 確保穩定性
+          node-version: 20
 
       - name: Install dependencies
-        # 改用 npm install，這樣就算沒有 package-lock.json 也能正常安裝
         run: npm install
 
       - name: Build project
@@ -39,13 +34,11 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # 請確認你的專案打包後是產出 dist 資料夾
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './order-system/dist' 
+          path: './dist' # 假設編譯產出為 dist。如果是 Vite 專案通常是 dist，React 舊版通常是 build
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        

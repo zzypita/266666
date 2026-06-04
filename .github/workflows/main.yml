@@ -19,7 +19,7 @@ jobs:
     defaults:
       run:
         # ⚠️ 請把下面這行修改成你真正的資料夾名稱（注意大小寫）
-        working-directory: ./你的資料夾精確名稱
+        working-directory: ./266666
 
     steps:
       - name: Checkout
@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # ⚠️ 這裡前面的資料夾名稱也要同步修改
-          path: './你的資料夾精確名稱/dist' 
+          path: './266666/dist' 
 
       - name: Deploy to GitHub Pages
         id: deployment

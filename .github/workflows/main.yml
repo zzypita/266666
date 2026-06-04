@@ -16,6 +16,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        # ⚠️ 請把下面這行修改成你真正的資料夾名稱（注意大小寫）
+        working-directory: ./你的資料夾精確名稱
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,7 +42,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist' # 假設編譯產出為 dist。如果是 Vite 專案通常是 dist，React 舊版通常是 build
+          # ⚠️ 這裡前面的資料夾名稱也要同步修改
+          path: './你的資料夾精確名稱/dist' 
 
       - name: Deploy to GitHub Pages
         id: deployment
